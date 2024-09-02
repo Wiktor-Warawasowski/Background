@@ -41,18 +41,26 @@ def add_solid_background(name, img):
     # Saving file to results directory
     cv2.imwrite(os.path.join(output_path, name), blended_image)
 
-    return blended_image_rgb
-
+    # return blended_image_rgb
+counter = 0
 for image_path in image_paths:
-    image, mask = remove_background(model_path, os.path.join(input_path, image_path))   #removing background
-    img_with_bg = add_solid_background(image_path, image)   #adding solid background
+    counter += 1
+    total = len(image_paths)
+    if not os.path.isfile(os.path.join(output_path, image_path)):
+        image, mask = remove_background(model_path, os.path.join(input_path, image_path))   #removing background
+        add_solid_background(image_path, image)   #adding solid background
+    # img_with_bg = add_solid_background(image_path, image)   #adding solid background
+        print(f"Image #{counter}/{total} done.")
+    else:
+        print(f"Image #{counter}/{total} already in results. Skipping {image_path}")
+
 
     #Creating a comparison plot
-    fig = plt.figure()
-    ax1 = fig.add_subplot(1, 2, 1)
-    ax1.imshow(cv2.cvtColor(cv2.imread(input_path + image_path), cv2.COLOR_RGBA2BGRA))
-    plt.axis('off')
-    ax2 = fig.add_subplot(1, 2, 2)
-    ax2.imshow(img_with_bg)
-    plt.axis('off')
-    plt.show()
+    # fig = plt.figure()
+    # ax1 = fig.add_subplot(1, 2, 1)
+    # ax1.imshow(cv2.cvtColor(cv2.imread(input_path + image_path), cv2.COLOR_RGBA2BGRA))
+    # plt.axis('off')
+    # ax2 = fig.add_subplot(1, 2, 2)
+    # ax2.imshow(img_with_bg)
+    # plt.axis('off')
+    # plt.show()
